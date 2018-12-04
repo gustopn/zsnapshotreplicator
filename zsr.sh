@@ -4,20 +4,16 @@
 
 # in order to know what our remote-side is we need to
 # parse command line options
-
-commandLineOption=`./src/parseCommandLineOptions.sh`
+commandLineOptions=`./src/parseCommandLineOptions.sh`
 
 # check out what filesystems do we have snapshotted on the remote side
+syncFilesystems=`./src/getRemoteSnapshotFilesystems.sh`
 
-./src/getRemoteSnapshotFilesystems.sh
-
-# in order to know where do we save our copy of remote zfs filesystems we need to 
-# parse the config file
-
-./src/getConfigOptions.sh
-
-# check what filesystems do we have locally
-
-./src/getLocalSnapshotFilesystems.sh
-
-echo $commandLineOption
+# update local synchronized filesystems
+if [ -n "$syncFilesystems" ]
+then \
+  for syncFSinstance in $syncFilesystems
+  do \
+    ./src/syncRemoteFilesystemLocally.sh $syncFSinstance
+  done
+fi
