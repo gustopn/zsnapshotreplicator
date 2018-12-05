@@ -4,13 +4,14 @@
 
 # in order to know what our remote-side is we need to
 # parse command line options
-commandLineOptions=`./src/parseCommandLineOptions.sh`
-
+passedCommandLineOptions="$*"
+commandLineOptions=`./src/parseCommandLineOptions.sh $passedCommandLineOptions`
+export $commandLineOptions
 # check out what filesystems do we have snapshotted on the remote side
-syncFilesystems=`./src/getRemoteSnapshotFilesystems.sh`
+syncFilesystems=`./src/getRemoteSnapshotFilesystems.sh $remotehost`
 
 # update local synchronized filesystems
-if [ -n "$syncFilesystems" ]
+if [ -n "$syncFilesystems" ] && false
 then \
   for syncFSinstance in $syncFilesystems
   do \
