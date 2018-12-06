@@ -12,10 +12,12 @@ then \
 fi
 
 # check out what filesystems do we have snapshotted on the remote side
-syncFilesystems=`./src/getRemoteSnapshotFilesystems.sh $remotehost`
+syncSnapshots=`./src/getRemoteSnapshotFilesystems.sh $remotehost`
+
+syncFilesystems=$(echo "$syncSnapshots" | awk -F'@' 'BEGIN { out = "" } { if (index(out, $1) == 0) { out = out $1 "\n" } } END { print out }')
 
 # update local synchronized filesystems
-if [ -n "$syncFilesystems" ] && false
+if [ -n "$syncFilesystems" ]
 then \
   for syncFSinstance in $syncFilesystems
   do \
