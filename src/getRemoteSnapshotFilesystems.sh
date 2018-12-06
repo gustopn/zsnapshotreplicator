@@ -1,3 +1,5 @@
 #!/bin/sh -x
-
-ssh $1 zfs list
+if [ -n "$1" ]
+then \
+  ssh $1 zfs list
+fi

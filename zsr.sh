@@ -6,7 +6,11 @@
 # parse command line options
 passedCommandLineOptions="$*"
 commandLineOptions=`./src/parseCommandLineOptions.sh $passedCommandLineOptions`
-export $commandLineOptions
+if [ -n "$commandLineOptions" ]
+then \
+  export $commandLineOptions
+fi
+
 # check out what filesystems do we have snapshotted on the remote side
 syncFilesystems=`./src/getRemoteSnapshotFilesystems.sh $remotehost`
 
